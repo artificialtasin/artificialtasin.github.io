@@ -15,4 +15,3 @@ export async function POST(req) {
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });
   }
-}
