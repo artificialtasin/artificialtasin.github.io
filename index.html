@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT কোম্পানির তথ্য সার্চ</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 650px; margin: 40px auto; padding: 20px; background: #f4f7f6; color: #333; }
+        h2 { text-align: center; color: #007bff; }
+        .search-container { display: flex; gap: 10px; margin-top: 20px; }
+        input { flex: 1; padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 16px; }
+        button { padding: 12px 20px; background: #007bff; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; }
+        button:hover { background: #0056b3; }
+        .result-box { margin-top: 20px; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); line-height: 1.6; }
+    </style>
+</head>
+<body>
+
+    <h2>গিটহাব আইটি ডেটা সার্চ এআই</h2>
+    <p style="text-align: center;">৫০টি আইটি কোম্পানির তথ্য থেকে জানতে সার্চ করুন।</p>
+
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="কোম্পানির নাম বা কাজের ধরন লিখুন (যেমন: NVIDIA, AI, ক্লাউড)...">
+        <button onclick="searchData()">খুঁজুন</button>
+    </div>
+
+    <div id="result" class="result-box">আপনার প্রশ্নের উত্তর এখানে দেখাবে...</div>
+
+    <script>
+        async function searchData() {
+            const query = document.getElementById('searchInput').value.trim().toLowerCase();
+            const resultBox = document.getElementById('result');
+
+            if (!query) {
+                resultBox.innerHTML = "দয়া করে কিছু লিখে সার্চ করুন।";
+                return;
+            }
+
+            resultBox.innerHTML = "তথ্য খোঁজা হচ্ছে...";
+
+            try {
+                // আপনার মূল ফাইল থেকে ডেটা নিয়ে আসবে
+                const response = await fetch('তথ্য প্রযুক্তি (IT), ডেটা প্রসেসিং, ক্লাউড কম্পিউটিং, সেমিকন্ডাক্টর….md');
+                const text = await response.text();
+
+                const lines = text.split('\n');
+                let foundResults = [];
+
+                // ফাইলের লাইন সার্চ করা
+                lines.forEach(line => {
+                    if (line.toLowerCase().includes(query) && line.includes('|')) {
+                        foundResults.push(line);
+                    }
+                });
+
+                if (foundResults.length > 0) {
+                    resultBox.innerHTML = "<strong>ফলাফল পাওয়া গেছে:</strong><br><br>" + foundResults.join('<br><br>');
+                } else {
+                    resultBox.innerHTML = "দুঃখিত, এই নামের কোনো তথ্য ফাইলে পাওয়া যায়নি।";
+                }
+            } catch (error) {
+                resultBox.innerHTML = "ফাইল পড়তে সমস্যা হচ্ছে। ফাইলের নামটি সঠিক আছে কিনা চেক করুন।";
+            }
+        }
+    </script>
+</body>
+</html>
