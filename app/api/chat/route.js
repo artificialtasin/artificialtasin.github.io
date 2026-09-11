@@ -36,12 +36,4 @@ export async function POST(req) {
 
     if (data.candidates && data.candidates.length > 0) {
       const reply = data.candidates[0].content.parts[0].text;
-      return NextResponse.json({ reply: reply });
-    } else {
-      return NextResponse.json({ reply: "Sorry, no response received from the server." });
-    }
-    
-  } catch (error) {
-    return NextResponse.json({ reply: `Server error: ${error.message}` });
-  }
-}
+      retu
