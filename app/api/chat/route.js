@@ -14,7 +14,7 @@ export async function POST(req) {
       return NextResponse.json({ reply: "Client error: No message provided." });
     }
 
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-lite:generateContent?key=${apiKey}`;
+    const url =`https://generativelanguage.googleapis.com/v1beta/models/gemini-lite:generateContent?key=${apiKey}`;
     
     const response = await fetch(url, {
       method: "POST",
