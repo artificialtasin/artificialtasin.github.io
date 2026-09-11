@@ -1,0 +1,37 @@
+import { NextResponse } from "next/server";
+
+export async function POST(req) {
+  try {
+    // ইউজারের পাঠানো মেসেজটি গ্রহণ করা
+    const { message } = await req.json();
+    
+    // Vercel থেকে আপনার সেভ করা API Key টি নিয়ে আসা
+    const apiKey = process.env.GEMINI_API_KEY;
+
+    // Gemini API-তে রিকোয়েস্ট পাঠানো
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+    
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: message }] }]
+      }),
+    });
+
+    const data = await response.json();
+
+    // Gemini এর উত্তরটি নিয়ে ওয়েবসাইটে পাঠানো
+    if (data.candidates && data.candidates.length > 0) {
+      const reply = data.candidates[0].content.parts[0].text;
+      return NextResponse.json({ reply: reply });
+    } else {
+      return NextResponse.json({ reply: "দুঃখিত, কোনো উত্তর পাওয়া যায়নি।" });
+    }
+    
+  } catch (error) {
+    return NextResponse.json({ reply: "সার্ভার এরর: " + error.message });
+  }
+}
